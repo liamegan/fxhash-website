@@ -121,20 +121,21 @@ export interface GenerativeTokenWithCollection extends GenerativeToken {
 }
 
 export interface GenerativeTokenFilters {
-  id_in?: number[]
-  flag_eq?: GenTokFlag
-  flag_in?: GenTokFlag[]
-  flag_neq?: GenTokFlag
-  price_gte?: number
-  price_lte?: number
-  mintProgress_eq?: "COMPLETED"|"ONGOING"|"ALMOST"
-  authorVerified_eq?: boolean
-  searchQuery_eq?: string
-  supply_lte?: number
-  supply_gte?: number
-  pricingMethod_eq?: GenTokPricing
-  locked_eq?: boolean
-  mintOpened_eq?: boolean
+  id_in?: number[];
+  flag_eq?: GenTokFlag;
+  flag_in?: GenTokFlag[];
+  flag_neq?: GenTokFlag;
+  price_gte?: number;
+  price_lte?: number;
+  mintProgress_eq?: "COMPLETED" | "ONGOING" | "ALMOST";
+  authorVerified_eq?: boolean;
+  searchQuery_eq?: string;
+  supply_lte?: number;
+  supply_gte?: number;
+  pricingMethod_eq?: GenTokPricing;
+  locked_eq?: boolean;
+  mintOpened_eq?: boolean;
+  mintOpensAt_lt?: string;
 }
 
 export interface GenerativeTokenFeatureValue {

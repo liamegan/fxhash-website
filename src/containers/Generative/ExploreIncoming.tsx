@@ -15,10 +15,13 @@ const ITEMS_PER_PAGE = 20
 const Qu_genTokens = gql`
   ${Frag_GenAuthor}
   ${Frag_GenPricing}
-  query GenerativeTokensIncoming($skip: Int, $take: Int, $sort: GenerativeSortInput, $filters: GenerativeTokenFilter) {
-    generativeTokens(
-      skip: $skip, take: $take, sort: $sort, filters: $filters
-    ) {
+  query GenerativeTokensIncoming(
+    $skip: Int
+    $take: Int
+    $sort: GenerativeSortInput
+    $filters: GenerativeTokenFilter
+  ) {
+    generativeTokens(skip: $skip, take: $take, sort: $sort, filters: $filters) {
       id
       name
       slug
@@ -33,13 +36,14 @@ const Qu_genTokens = gql`
       lockEnd
       royalties
       createdAt
+      mintOpensAt
       reserves {
         amount
       }
       ...Author
     }
   }
-`
+`;
 
 interface Props {
 }
@@ -51,6 +55,8 @@ export const ExploreIncomingTokens = ({ }: Props) => {
   const currentLength = useRef<number>(0)
   const ended = useRef<boolean>(false)
 
+  const datebefore = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+
   const { data, loading, fetchMore } = useQuery(Qu_genTokens, {
     notifyOnNetworkStatusChange: true,
     variables: {
@@ -58,18 +64,16 @@ export const ExploreIncomingTokens = ({ }: Props) => {
       take: ITEMS_PER_PAGE,
       filters: {
         mintOpened_eq: false,
-        flag_in: [
-          GenTokFlag.CLEAN,
-          GenTokFlag.NONE,
-        ]
+        mintOpensAt_lt: datebefore.toISOString(),
+        flag_in: [GenTokFlag.CLEAN, GenTokFlag.NONE],
       },
       sort: {
         mintOpensAt: "ASC",
-      }
+      },
     },
     fetchPolicy: "network-only",
     nextFetchPolicy: "cache-and-network",
-  })
+  });
 
   useEffect(() => {
     if (!loading) {
